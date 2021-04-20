@@ -3,6 +3,7 @@
 const express = require('express')
 const app = express()
 const exphdb = require('express-handlebars')
+const { results: restaurants } = require('./restaurant.json')
 const port = 3000
 
 // 設定使用handlebars樣板引擎
@@ -14,8 +15,11 @@ app.set('view engine', 'handlebars')
 // Apply static resources(bootstrap5, popper)
 app.use(express.static('public'))
 
+// 設定路由
+// Set routes
 app.get('/', (req, res) => {
-  res.render('index')
+  // 在index.hendlebars渲染餐廳資料
+  res.render('index', {restaurants})
 })
 
 app.listen(port, () => {
