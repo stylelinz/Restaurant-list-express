@@ -6,11 +6,17 @@
         <h4 class="mb-2">尋找餐廳：</h4>
         <div class="input-group">
           <input type="text" name="keyword" class="form-control" placeholder="輸入餐廳、分類" aria-label="Restaurant Name..."
-            value="" aria-describedby="search-button">
+            value="{{ keyword }}" aria-describedby="search-button">
           <div class="input-group-append">
             <button class="btn btn-major" type="submit" id="search-button"><i class="fas fa-search"></i></button>
           </div>
         </div>
+        {{!-- 使用unless => if的相反 => falsy的參數回傳為true --}}
+        {{#unless restaurants}}
+        <div class="invalid-feedback" style="display: block;">
+          找不到含有 {{ keyword }} 關鍵字的餐廳
+        </div>
+        {{/unless}}
       </form>
     </div>
   </div>
@@ -42,6 +48,20 @@
           </div>
         </a>
         {{/each}}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Search Error</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>找不到含有 {{ keyword }} 關鍵字的餐廳</p>
       </div>
     </div>
   </div>

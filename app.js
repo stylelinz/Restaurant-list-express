@@ -23,14 +23,15 @@ app.get('/', (req, res) => {
 })
 
 app.get('/restaurants/:id', (req, res) => {
-  const restaurant = restaurants.find(rest => rest.id.toString() ===req.params.id)
+  const restaurant = restaurants.find(rest => rest.id.toString() === req.params.id)
   res.render('show', { restaurant })
 })
 
 app.get('/search', (req, res) =>{
   const { keyword } = req.query
-  const result = restaurants.filter(rest => rest.name.toLowerCase().includes(keyword.toLowerCase()))
-  res.render('index', { restaurants: result })
+  let result = restaurants.filter(rest => rest.name.toLowerCase().includes(keyword.toLowerCase()))
+  // 如果搜尋結果為空，回傳所有結果
+  res.render('index', { restaurants: result || restaurants , keyword})
 })
 
 app.listen(port, () => {
