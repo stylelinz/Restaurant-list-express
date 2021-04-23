@@ -18,11 +18,11 @@
 ## 專案啟動方式
   1. 下載專案壓縮檔或使用git clone至個人電腦
   ```bash
-    git clone https://github.com/stylelinz/restaurant_list.git
+    git clone https://github.com/stylelinz/restaurant-list-express.git
   ```
   2. 進入專案資料夾，在終端機輸入以下指令
   ```bash
-    cd movie_list_express
+    cd movie-list-express
   ```
   3. 安裝npm套件，在終端機輸入以下指令
   ```bash
