@@ -4,6 +4,7 @@ const express = require('express')
 const exphdb = require('express-handlebars')
 const mongoose = require('mongoose')
 const Restaurants = require('./models/restaurant-list')
+const bodyParser = require('body-parser')
 
 mongoose.connect('mongodb://localhost/restaurant-list', { useNewUrlParser: true, useUnifiedTopology: true })
 
@@ -22,6 +23,7 @@ app.set('view engine', 'handlebars')
 // 加上靜態資源
 // Apply static resources(bootstrap5, popper)
 app.use(express.static('public'))
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // 設定路由
 // Set routes
@@ -30,6 +32,10 @@ app.get('/', (req, res) => {
   Restaurants.find()
     .lean()
     .then(restaurants => res.render('index', { restaurants }))
+})
+
+app.get('/restaurants/new', (req, res) => {
+  res.render('new')
 })
 
 app.get('/restaurants/:id', (req, res) => {
@@ -46,6 +52,13 @@ app.get('/search', (req, res) => {
   })
   // 如果搜尋結果為空，回傳所有結果
   res.render('index', { restaurants: result, keyword })
+})
+
+app.post('/restaurants', (req, res) => {
+  const newRest = req.body
+  return Restaurants.create(newRest)
+    .then(() => res.redirect('/'))
+    .catch(err => console.log(err))
 })
 
 // 不要忘記開監聽

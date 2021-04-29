@@ -10,6 +10,7 @@
   * 地址
   * 電話
   * 餐廳簡述
+* 可以自行新增自己喜歡的餐廳至頁面
 
 ## 環境建置與需求 (prerequisites)
  * [Node.js](https://nodejs.org/en/): v15.11.0
