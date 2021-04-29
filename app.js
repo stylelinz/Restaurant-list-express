@@ -1,14 +1,22 @@
 // 套入框架與樣板引擎模組
 // Import modules anc set port
 const express = require('express')
-const app = express()
 const exphdb = require('express-handlebars')
-const { results: restaurants } = require('./restaurant.json')
-const port = 3000
+const mongoose = require('mongoose')
+const Restaurants = require('./models/restaurant-list')
 
+mongoose.connect('mongodb://localhost/restaurant-list', { useNewUrlParser: true, useUnifiedTopology: true })
+
+const db = mongoose.connection
+
+db.on('error', () => console.log('mongodb error!'))
+db.once('open', () => console.log('mongodb connected!'))
+
+const app = express()
+const port = 3000
 // 設定使用handlebars樣板引擎
 // Set template engine handlebars
-app.engine('handlebars', exphdb({defaultLayout: 'main'}))
+app.engine('handlebars', exphdb({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 
 // 加上靜態資源
@@ -19,7 +27,9 @@ app.use(express.static('public'))
 // Set routes
 app.get('/', (req, res) => {
   // 在 index.handlebars 渲染餐廳資料
-  res.render('index', {restaurants})
+  Restaurants.find()
+    .lean()
+    .then(restaurants => res.render('index', { restaurants }))
 })
 
 app.get('/restaurants/:id', (req, res) => {
@@ -27,7 +37,7 @@ app.get('/restaurants/:id', (req, res) => {
   res.render('show', { restaurant })
 })
 
-app.get('/search', (req, res) =>{
+app.get('/search', (req, res) => {
   const { keyword } = req.query
   // 關鍵字可搜尋'餐廳名字'、'餐廳英文名字'、'餐廳類別'
   const result = restaurants.filter(rest => {
@@ -35,7 +45,7 @@ app.get('/search', (req, res) =>{
     return [name, name_en, category].some(props => props.toLowerCase().includes(keyword.trim().toLowerCase()))
   })
   // 如果搜尋結果為空，回傳所有結果
-  res.render('index', { restaurants: result , keyword})
+  res.render('index', { restaurants: result, keyword })
 })
 
 // 不要忘記開監聽
