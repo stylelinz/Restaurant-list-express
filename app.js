@@ -39,8 +39,11 @@ app.get('/restaurants/new', (req, res) => {
 })
 
 app.get('/restaurants/:id', (req, res) => {
-  const restaurant = restaurants.find(rest => rest.id.toString() === req.params.id)
-  res.render('show', { restaurant })
+  const { id } = req.params
+  return Restaurants.findById(id)
+    .lean()
+    .then(restaurant => res.render('show', { restaurant }))
+    .catch(err => console.log(err))
 })
 
 app.get('/search', (req, res) => {
