@@ -13,7 +13,7 @@
 
 ## 環境建置與需求 (prerequisites)
  * [Node.js](https://nodejs.org/en/): v15.11.0
-
+ * [MongoDB](https://www.mongodb.com/try/download/community): v4.2.13
 
 ## 專案啟動方式
   1. 下載專案壓縮檔或使用git clone至個人電腦
@@ -30,14 +30,19 @@
     npm i nodemon
   ```
 
-  4. 啟動伺服器，執行 app.js 檔案，輸入以下指令
+  4. 在終端機輸入以下指令新增種子資料
+  ```bash
+    npm run seed
+  ```
+
+  5. 啟動伺服器，執行 app.js 檔案，輸入以下指令
   ```bash
     npm run dev
   ```
 
-  5. 當終端機出現以下字樣，表示伺服器與資料庫已啟動並成功連結，可以在瀏覽器觀看 http://localhost:3000
+  6. 當終端機出現以下字樣，表示伺服器與資料庫已啟動並成功連結，可以在瀏覽器觀看 http://localhost:3000
   ```bash
     Express is listening on http://localhost:3000
   ```
 
-  6. 在終端機按下 `ctrl` + `c` 或 `cmd` + `c`，以關閉伺服器
+  7. 在終端機按下 `ctrl` + `c` 或 `cmd` + `c`，以關閉伺服器
