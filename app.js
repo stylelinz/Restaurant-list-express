@@ -45,6 +45,14 @@ app.get('/restaurants/:id', (req, res) => {
     .catch(err => console.log(err))
 })
 
+app.get('/restaurants/:id/edit', (req, res) => {
+  const { id } = req.params
+  return Restaurants.findById(id)
+    .lean()
+    .then(restaurant => res.render('edit', { restaurant }))
+    .catch(err => console.log(err))
+})
+
 app.get('/search', (req, res) => {
   const { keyword } = req.query
   // 關鍵字可搜尋'餐廳名字'、'餐廳英文名字'、'餐廳類別'
@@ -60,6 +68,20 @@ app.post('/restaurants', (req, res) => {
   const newRest = req.body
   return Restaurants.create(newRest)
     .then(() => res.redirect('/'))
+    .catch(err => console.log(err))
+})
+
+app.post('/restaurants/:id/edit', (req, res) => {
+  const { id } = req.params
+  const editedRest = req.body
+  return Restaurants.findById(id)
+    .then(restaurant => {
+      for (const keys in editedRest) {
+        restaurant[keys] = editedRest[keys]
+      }
+      return restaurant.save()
+    })
+    .then(() => res.redirect(`/restaurants/${id}`))
     .catch(err => console.log(err))
 })
 
