@@ -4,7 +4,6 @@ const express = require('express')
 const exphdb = require('express-handlebars')
 const mongoose = require('mongoose')
 const Restaurants = require('./models/restaurant-list')
-const bodyParser = require('body-parser')
 
 mongoose.connect('mongodb://localhost/restaurant-list', { useNewUrlParser: true, useUnifiedTopology: true })
 
@@ -23,7 +22,7 @@ app.set('view engine', 'handlebars')
 // 加上靜態資源
 // Apply static resources(bootstrap5, popper)
 app.use(express.static('public'))
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }))
 
 // 設定路由
 // Set routes
