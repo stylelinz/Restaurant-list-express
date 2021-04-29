@@ -52,8 +52,11 @@
               </div>
             </div>
           </a>
-          <div class="card-body pt-0 d-flex justify-content-end">
+          <div class="card-body pt-0 d-flex justify-content-end align-items-center">
             <a href="/restaurants/{{this._id}}/edit">編輯</a>
+            <form action="/restaurants/{{this._id}}/delete" method="post" class="mx-2">
+              <button class="btn btn-danger"type="submit">刪除</button>
+            </form>
           </div>
         </div>
         {{/each}}

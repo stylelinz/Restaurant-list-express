@@ -85,6 +85,14 @@ app.post('/restaurants/:id/edit', (req, res) => {
     .catch(err => console.log(err))
 })
 
+app.post('/restaurants/:id/delete', (req, res) => {
+  const { id } = req.params
+  return Restaurants.findById(id)
+    .then(restaurant => restaurant.remove())
+    .then(() => res.redirect('/'))
+    .catch(err => console.log(err))
+})
+
 // 不要忘記開監聽
 app.listen(port, () => {
   console.log(`Server listening on http://localhost:${port}`)
