@@ -55,13 +55,12 @@ app.get('/restaurants/:id/edit', (req, res) => {
 
 app.get('/search', (req, res) => {
   const { keyword } = req.query
+  const query = new RegExp(keyword.trim(), 'i')
   // 關鍵字可搜尋'餐廳名字'、'餐廳英文名字'、'餐廳類別'
-  const result = restaurants.filter(rest => {
-    const { name, name_en, category } = rest
-    return [name, name_en, category].some(props => props.toLowerCase().includes(keyword.trim().toLowerCase()))
-  })
-  // 如果搜尋結果為空，回傳所有結果
-  res.render('index', { restaurants: result, keyword })
+  return Restaurants.find({
+    $or: [{ name: query }, { name_en: query }, { category: query }]
+  }).lean()
+    .then(results => res.render('index', { restaurants: results, keyword }))
 })
 
 app.post('/restaurants', (req, res) => {
