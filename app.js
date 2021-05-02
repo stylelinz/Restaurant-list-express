@@ -5,7 +5,11 @@ const exphdb = require('express-handlebars')
 const mongoose = require('mongoose')
 const Restaurants = require('./models/restaurant-list')
 
-mongoose.connect('mongodb://localhost/restaurant-list', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://localhost/restaurant-list', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false
+})
 
 const db = mongoose.connection
 
@@ -73,21 +77,14 @@ app.post('/restaurants', (req, res) => {
 app.post('/restaurants/:id/edit', (req, res) => {
   const { id } = req.params
   const editedRest = req.body
-  return Restaurants.findById(id)
-    .then(restaurant => {
-      for (const keys in editedRest) {
-        restaurant[keys] = editedRest[keys]
-      }
-      return restaurant.save()
-    })
+  return Restaurants.findByIdAndUpdate(id, editedRest)
     .then(() => res.redirect(`/restaurants/${id}`))
     .catch(err => console.log(err))
 })
 
 app.post('/restaurants/:id/delete', (req, res) => {
   const { id } = req.params
-  return Restaurants.findById(id)
-    .then(restaurant => restaurant.remove())
+  return Restaurants.findByIdAndRemove(id)
     .then(() => res.redirect('/'))
     .catch(err => console.log(err))
 })
