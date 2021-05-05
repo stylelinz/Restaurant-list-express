@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
   }
   const sortParams = req.query.sort
   // 在 index.handlebars 渲染餐廳資料
-  Restaurants.find()
+  return Restaurants.find()
     .lean()
     .sort(sorting[sortParams])
     .then(restaurants => res.render('index', { restaurants }))
