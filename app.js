@@ -2,22 +2,13 @@
 // Import modules
 const express = require('express')
 const exphdb = require('express-handlebars')
-const mongoose = require('mongoose')
 const methodOverride = require('method-override')
+
+// Connect mongoose by config/mongoose.js
+require('./config/mongoose')
 
 // Import local resources
 const routes = require('./routes')
-
-mongoose.connect('mongodb://localhost/restaurant-list', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false
-})
-
-const db = mongoose.connection
-
-db.on('error', () => console.log('mongodb error!'))
-db.once('open', () => console.log('mongodb connected!'))
 
 const app = express()
 const port = 3000
