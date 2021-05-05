@@ -1,9 +1,9 @@
 // 套入框架與樣板引擎模組
-// Import modules anc set port
+// Import modules
 const express = require('express')
 const exphdb = require('express-handlebars')
 const mongoose = require('mongoose')
-const Restaurants = require('./models/restaurant-list')
+const methodOverride = require('method-override')
 
 mongoose.connect('mongodb://localhost/restaurant-list', {
   useNewUrlParser: true,
@@ -27,6 +27,7 @@ app.set('view engine', 'handlebars')
 // Apply static resources(bootstrap5, popper)
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
+app.use(methodOverride('_method'))
 
 // 設定路由
 // Set routes
