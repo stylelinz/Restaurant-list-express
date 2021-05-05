@@ -4,7 +4,7 @@ const router = express.Router()
 const Restaurants = require('../../models/restaurant-list')
 
 router.get('/new', (req, res) => {
-  res.render('new')
+  return res.render('new')
 })
 
 router.get('/:id', (req, res) => {

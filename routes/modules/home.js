@@ -4,11 +4,19 @@ const router = express.Router()
 const Restaurants = require('../../models/restaurant-list')
 
 router.get('/', (req, res) => {
+  const sorting = {
+    ia: { _id: 'asc' },
+    id: { _id: 'desc' },
+    ra: { rating: 'asc' },
+    rd: { rating: 'desc' }
+  }
+  const sortParams = req.query.sort
   // 在 index.handlebars 渲染餐廳資料
   Restaurants.find()
     .lean()
-    .sort({ _id: 'asc' })
+    .sort(sorting[sortParams])
     .then(restaurants => res.render('index', { restaurants }))
+    .catch(err => console.log(err))
 })
 
 router.get('/search', (req, res) => {
@@ -19,6 +27,7 @@ router.get('/search', (req, res) => {
     $or: [{ name: query }, { name_en: query }, { category: query }]
   }).lean()
     .then(results => res.render('index', { restaurants: results, keyword }))
+    .catch(err => console.log(err))
 })
 
 module.exports = router
