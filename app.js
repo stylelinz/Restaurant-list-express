@@ -3,12 +3,14 @@
 const express = require('express')
 const exphdb = require('express-handlebars')
 const methodOverride = require('method-override')
+const session = require('express-session')
 
 // Connect mongoose by config/mongoose.js
 require('./config/mongoose')
 
 // Import local resources
 const routes = require('./routes')
+const usePassport = require('./config/passport')
 
 const app = express()
 const port = 3000
@@ -20,8 +22,15 @@ app.set('view engine', 'handlebars')
 // 加上靜態資源
 // Apply static resources(bootstrap5, popper)
 app.use(express.static('public'))
+app.use(session({
+  secret: 'ThisIsASecret',
+  resave: false,
+  saveUninitialized: true
+}))
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
+// Use passport authenticate configuration (middleware)
+usePassport(app)
 // 設定路由
 // Set routes
 app.use(routes)
