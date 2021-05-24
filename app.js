@@ -4,6 +4,7 @@ const express = require('express')
 const exphdb = require('express-handlebars')
 const methodOverride = require('method-override')
 const session = require('express-session')
+const flash = require('connect-flash')
 
 // Connect mongoose by config/mongoose.js
 require('./config/mongoose')
@@ -29,8 +30,17 @@ app.use(session({
 }))
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
+app.use(flash())
 // Use passport authenticate configuration (middleware)
 usePassport(app)
+// Set these variable to global so every views can access them
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.isAuthenticated()
+  res.locals.user = req.user
+  res.locals.successMsg = req.flash('successMsg')
+  res.locals.warningMsg = req.flash('warningMsg')
+  next()
+})
 // 設定路由
 // Set routes
 app.use(routes)

@@ -20,6 +20,9 @@
             width="30" height="30" class="d-inline-block align-top" alt="好。吃">
           我的餐廳清單
         </a>
+        {{#if isAuthenticated}}
+        <a href="/users/logout" class="btn btn-outline-secondary">登出</a>
+        {{/if}}
       </div>
     </nav>
 
@@ -29,6 +32,5 @@
   <!-- partial template will replace 'body' -->
   {{{ body }}}
   <script src="/js/bootstrap.bundle.js"></script>
-  <script src="/js/main.js"></script>
 </body>
 </html>

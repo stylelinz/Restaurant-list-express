@@ -40,6 +40,7 @@ router.post('/register', async (req, res) => {
 
 router.get('/logout', (req, res) => {
   req.logout()
+  req.flash('successMsg', '您已成功登出。')
   return res.redirect('/users/login')
 })
 
