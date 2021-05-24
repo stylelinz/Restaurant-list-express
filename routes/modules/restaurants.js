@@ -7,14 +7,6 @@ router.get('/new', (req, res) => {
   return res.render('new')
 })
 
-router.get('/:id', (req, res) => {
-  const { id } = req.params
-  return Restaurants.findById(id)
-    .lean()
-    .then(restaurant => res.render('show', { restaurant }))
-    .catch(err => console.log(err))
-})
-
 router.get('/:id/edit', (req, res) => {
   const { id: _id } = req.params
   const userId = req.user._id
@@ -24,10 +16,18 @@ router.get('/:id/edit', (req, res) => {
     .catch(err => console.log(err))
 })
 
+router.get('/:id', (req, res) => {
+  const { id } = req.params
+  return Restaurants.findById(id)
+    .lean()
+    .then(restaurant => res.render('show', { restaurant }))
+    .catch(err => console.log(err))
+})
+
 router.post('/', (req, res) => {
   const newRest = req.body
   const userId = req.user._id
-  return Restaurants.create({ newRest, userId })
+  return Restaurants.create(Object.assign(newRest, { userId }))
     .then(() => res.redirect('/'))
     .catch(err => console.log(err))
 })

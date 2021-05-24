@@ -5,6 +5,9 @@ const exphdb = require('express-handlebars')
 const methodOverride = require('method-override')
 const session = require('express-session')
 const flash = require('connect-flash')
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 
 // Connect mongoose by config/mongoose.js
 require('./config/mongoose')
@@ -14,7 +17,7 @@ const routes = require('./routes')
 const usePassport = require('./config/passport')
 
 const app = express()
-const port = 3000
+const port = process.env.PORT
 // 設定使用handlebars樣板引擎
 // Set template engine handlebars
 app.engine('handlebars', exphdb({ defaultLayout: 'main' }))
@@ -24,7 +27,7 @@ app.set('view engine', 'handlebars')
 // Apply static resources(bootstrap5, popper)
 app.use(express.static('public'))
 app.use(session({
-  secret: 'ThisIsASecret',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true
 }))
