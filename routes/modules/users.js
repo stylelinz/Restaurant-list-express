@@ -3,6 +3,7 @@ const router = express.Router()
 const passport = require('passport')
 const bcrypt = require('bcryptjs')
 
+const validator = require('../../middleware/validator')
 const User = require('../../models/User')
 
 router.get('/login', (req, res) => {
@@ -18,7 +19,7 @@ router.get('/register', (req, res) => {
   res.render('register')
 })
 
-router.post('/register', async (req, res) => {
+router.post('/register', validator.register, async (req, res) => {
   const { name, email, password, confirmPassword } = req.body
   try {
     const user = await User.findOne({ email })
