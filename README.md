@@ -1,6 +1,9 @@
 # 我的餐廳清單
 一個結合 Express.js, mongoDB 的餐廳清單網站。
 
+### 實際網站操作可前往[這裡](https://tranquil-tundra-63637.herokuapp.com/)
+
+![login](login.png)
 ![demo](demo.png)
 
 ## 這是什麼
@@ -15,6 +18,8 @@
 * 可以修改餐廳的詳細資訊 (v2.0新增)
 * 可以將餐廳從清單內刪除 (v2.0新增)
 * 可以將餐廳藉由建立時間先後/評價高低作排序 (v2.0新增)
+* 可以建立帳號密碼登入(本地註冊/臉書註冊) (2021-05-24新增)
+* 可以建立自己專屬的餐廳清單(2021-05-24新增)
 
 ## 環境建置與需求 (prerequisites)
  * [Node.js](https://nodejs.org/en/): v15.11.0
@@ -47,7 +52,7 @@
 
   6. 當終端機出現以下字樣，表示伺服器與資料庫已啟動並成功連結，可以在瀏覽器觀看 http://localhost:3000
   ```bash
-    Express is listening on http://localhost:3000
+    Server is listening on http://localhost:3000
   ```
 
   7. 在終端機按下 `ctrl` + `c` 或 `cmd` + `c`，以關閉伺服器
