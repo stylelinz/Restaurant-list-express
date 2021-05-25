@@ -14,22 +14,24 @@ module.exports = app => {
   app.use(passport.session())
 
   // 設定本地登入策略
-  passport.use(new LocalStrategy({ usernameField: 'email' },
-    async (email, password, done) => {
+  passport.use(new LocalStrategy({ usernameField: 'email', passReqToCallback: true },
+    async (req, email, password, done) => {
       try {
         const user = await User.findOne({ email })
         if (!user) {
+          req.flash('warningMsg', 'Email 或密碼錯誤，請再試一次。')
           return done(null, false, { message: 'Invalid email or password.' })
         }
 
         const isMatch = await bcrypt.compare(password, user.password)
         if (!isMatch) {
+          req.flash('warningMsg', 'Email 或密碼錯誤，請再試一次。')
           return done(null, false, { message: 'Invalid email or password.' })
         }
 
         return done(null, user)
       } catch (err) {
-        done(err, false)
+        return done(err)
       }
     }
   ))
@@ -44,7 +46,9 @@ module.exports = app => {
     try {
       const { name, email } = profile._json
       const user = await User.findOne({ email })
-      if (user) return done(null, user)
+      if (user) {
+        return done(null, user)
+      }
       const randomPassword = Math.random().toString(36).slice(-8)
       const salt = await bcrypt.genSalt(10)
       const hash = await bcrypt.hash(randomPassword, salt)
