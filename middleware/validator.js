@@ -50,13 +50,15 @@ module.exports.restaurant = [
     .isFloat({ min: 0, max: 5 }).withMessage('評分範圍為0到5，比照Google Map評分。'),
   body('description').trim().optional().escape(),
   (req, res, next) => {
-    // if (err) console.log(err)
+    const view = req.path === '/' ? 'new' : 'edit'
     const errors = validationResult(req)
     const restInfo = req.body
+    if (view === 'edit') {
+      restInfo._id = req.path.slice(1)
+    }
     if (!errors.isEmpty()) {
       const errorMsg = errors.errors.map(err => err.msg)
-      console.log(errors)
-      return res.render('new', { restInfo, errorMsg })
+      return res.render(view, { restInfo, errorMsg })
     }
     next()
   }
