@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const Restaurants = require('../../models/restaurant-list')
+const validator = require('../../middleware/validator')
 
 router.get('/new', (req, res) => {
   return res.render('new')
@@ -12,7 +13,7 @@ router.get('/:id/edit', (req, res) => {
   const userId = req.user._id
   return Restaurants.findOne({ userId, _id })
     .lean()
-    .then(restaurant => res.render('edit', { restaurant }))
+    .then(restInfo => res.render('edit', { restInfo }))
     .catch(err => console.log(err))
 })
 
@@ -24,7 +25,7 @@ router.get('/:id', (req, res) => {
     .catch(err => console.log(err))
 })
 
-router.post('/', (req, res) => {
+router.post('/', validator.restaurant, (req, res) => {
   const newRest = req.body
   const userId = req.user._id
   return Restaurants.create(Object.assign(newRest, { userId }))
@@ -32,7 +33,7 @@ router.post('/', (req, res) => {
     .catch(err => console.log(err))
 })
 
-router.put('/:id', (req, res) => {
+router.put('/:id', validator.restaurant, (req, res) => {
   const { id: _id } = req.params
   const userId = req.user._id
   const editedRest = req.body
